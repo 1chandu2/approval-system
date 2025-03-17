@@ -79,7 +79,7 @@ public class TaskService {
         approvalRepository.save(approval);
 
         // Notify creator asynchronously
-        emailService.sendEmailAsync(task.getCreatedBy().getEmailId(), "Task Approved", "User : " + task.getCreatedBy().getFirstName() + " " + task.getCreatedBy().getFirstName() +  " has approved your task: " + task.getTitle());
+        emailService.sendEmailAsync(task.getCreatedBy().getEmailId(), "Task Approved", "User : " + task.getCreatedBy().getFirstName() + " " + task.getCreatedBy().getLastName() +  " has approved your task: " + task.getTitle());
 
         List<Approval> approvals = approvalRepository.findByTask(task);
         if (approvals.size() >= 3) {
@@ -87,7 +87,7 @@ public class TaskService {
             taskRepository.save(task);
 
             // Notify all users asynchronously
-            String notification = "Task '" + task.getTitle() + "' has been fully approved.";
+            String notification = "Task '" + task.getTitle() + "' has been approved from all the approvers";
             emailService.sendEmailAsync(task.getCreatedBy().getEmailId(), "Task Approved", notification);
             for (User approverUser : task.getApprovers()) {
                 emailService.sendEmailAsync(approverUser.getEmailId(), "Task Approved", notification);

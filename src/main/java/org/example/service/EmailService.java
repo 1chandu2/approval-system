@@ -23,7 +23,7 @@ public class EmailService {
                 message.setText(body);
                 mailSender.send(message);
             } catch (Exception e) {
-                // Log error (optional)
+                System.out.println(e.getMessage());
             }
         });
     }
